@@ -1,4 +1,4 @@
-name: Foundry UVTT AD v13
+name: Foundry UVTT AD v14
 
 permissions:
   contents: write # Add this
@@ -22,9 +22,9 @@ jobs:
 
       - name: Zip output
         run: |
-          mkdir dd-import-ad-v13
-          cp *.* ./dd-import-ad-v13/
-          zip -r dd-import-ad-v13.zip dd-import-ad-v13
+          mkdir dd-import-ad-v14
+          cp *.* ./dd-import-ad-v14/
+          zip -r dd-import-ad-v14.zip dd-import-ad-v14
 
       - name: Create release
         env:
@@ -37,4 +37,4 @@ jobs:
           gh release create "$tag" \
             --title="Release $tag" \
             --draft \
-            module.json dd-import-ad-v13.zip
+            module.json dd-import-ad-v14.zip
