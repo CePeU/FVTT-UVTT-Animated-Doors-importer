@@ -1,7 +1,7 @@
 # Foundry VTT-UVTT-Dungeondraft-Importer for Foundry v13 - Dungeondraft Animated Door Version
 Allows importing Universal VTT map files into FoundryVTT.
 
-![](https://img.shields.io/github.com/CePeU/FVTT-UVTT-Animated-Doors-importer/latest/uvtt-import-v13.zip?label=Downloads%20%28Latest%20Version%29)
+![](https://img.shields.io/github.com/CePeU/FVTT-UVTT-Animated-Doors-importer/latest/dd-import-v13.zip?label=Downloads%20%28Latest%20Version%29)
 
 ## About this Version
 
@@ -17,7 +17,9 @@ I might also consider to add multi level support for imports. But as I said my c
 As my plugin for Dungeondraft is a bit of a special thing and I do not want to start a discussion about AI usage I forked this module to make it work with animated doors.
 
 I took great care to make this work but time is an issue and this code is not all of my own. If you experience a bug you are very welcome to open an issue on this github or to contact me
-in the Dungeondraft discord as CePeU.
+in the Dungeondraft discord under my handle CePeU.
+
+https://discord.com/invite/6Ak9sZQ
 
 Be aware that I tried to keep backward compatibility to the v13 version of this Foundry module. While you still are able to use the import of several files like the old module did you cannot
 mix files with animated doors into that list. That is currently NOT supported!
