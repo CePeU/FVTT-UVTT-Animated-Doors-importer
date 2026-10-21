@@ -14,7 +14,7 @@ Hooks.on("renderSceneDirectory", async (app, html) => {
 })
 
 Hooks.on("init", () => {
-  game.settings.register("dd-import", "importSettings", {
+  game.settings.register("dd-import-ad-v13", "importSettings", {
     name: "Dungeondraft Default Path",
     scope: "world",
     config: false,
@@ -33,7 +33,7 @@ Hooks.on("init", () => {
     }
   })
 
-  game.settings.register("dd-import", "openableWindows", {
+  game.settings.register("dd-import-ad-v13", "openableWindows", {
     name: "Openable Windows",
     hint: "Should windows be openable? Note that you can make portals import as windows by unchecking 'block light' in Dungeondraft",
     scope: "world",
@@ -46,11 +46,11 @@ Hooks.on("init", () => {
 class DDImporter extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) {
 
   static DEFAULT_OPTIONS = {
-    id: "dd-importer",
+    id: "dd-import-ad-v13",
     tag: "form",
     classes: ["standard-form"],
     window: {
-      title: "Universal Battlemap Importer",
+      title: "Universal Battlemap AD Importer",
       resizable: true
     },
     position: {
@@ -71,7 +71,7 @@ class DDImporter extends foundry.applications.api.HandlebarsApplicationMixin(fou
   /** @override */
   static PARTS = {
     form: {
-      template: "modules/dd-import/importer.hbs",
+      template: "modules/dd-import-ad-v13/importer.hbs",
       scrollable: [""]
     },
     footer: {
@@ -82,7 +82,7 @@ class DDImporter extends foundry.applications.api.HandlebarsApplicationMixin(fou
 
   async _prepareContext() {
     let context = await super._prepareContext();
-    let settings = game.settings.get("dd-import", "importSettings")
+    let settings = game.settings.get("dd-import-ad-v13", "importSettings")
 
     context.dataSources = {
       data: "User Data",
@@ -346,7 +346,7 @@ class DDImporter extends foundry.applications.api.HandlebarsApplicationMixin(fou
       ui.notifications.notify("Creating scene")
       DDImporter.DDImport(files, aggregated, sceneName, fileName, path, fidelity, offset, padding, image_type, bucket, game.data.files.s3?.endpoint, source, pixelsPerGrid)
 
-      game.settings.set("dd-import", "importSettings", {
+      game.settings.set("dd-import-ad-v13", "importSettings", {
         source: source,
         bucket: bucket,
         path: path,
@@ -789,7 +789,7 @@ class DDImporter extends foundry.applications.api.HandlebarsApplicationMixin(fou
             ((door.bounds[1].x - originX) * pixelsPerGrid) + offsetX,
             ((door.bounds[1].y - originY) * pixelsPerGrid) + offsetY
           ],
-          door: game.settings.get("dd-import", "openableWindows") ? 1 : (door.closed ? 1 : 0), // If openable windows - all portals should be doors, otherwise, only portals that "block light" should be openable (doors)
+          door: game.settings.get("dd-import-ad-v13", "openableWindows") ? 1 : (door.closed ? 1 : 0), // If openable windows - all portals should be doors, otherwise, only portals that "block light" should be openable (doors)
           light: door.closed ? CONST.WALL_SENSE_TYPES.NORMAL : CONST.WALL_SENSE_TYPES.PROXIMITY,
           sight: door.closed ? CONST.WALL_SENSE_TYPES.NORMAL : CONST.WALL_SENSE_TYPES.PROXIMITY,
           threshold: door.closed ? {} : { attenuation: true, light: 10, sight: 10 }
