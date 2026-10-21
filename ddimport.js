@@ -5,7 +5,7 @@ Hooks.once("init", registerAnimatedDoorSettings);
 
 Hooks.on("renderSceneDirectory", async (app, html) => {
   let button = document.createElement("button");
-  button.innerHTML = "<i class='fas fa-file-import'></i> Universal Battlemap Import";
+  button.innerHTML = "<i class='fas fa-file-import'></i> AD Universal Battlemap Import";
   button.addEventListener("click", ev => {
     new DDImporter().render(true);
   })
@@ -50,7 +50,7 @@ class DDImporter extends foundry.applications.api.HandlebarsApplicationMixin(fou
     tag: "form",
     classes: ["standard-form"],
     window: {
-      title: "Universal Battlemap AD Importer",
+      title: "AD Universal Battlemap Importer",
       resizable: true
     },
     position: {
