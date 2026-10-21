@@ -1,62 +1,4 @@
 //V13 version
-// file import functions import
-//import { uploadFile, DecodeImage, getImageType } from "./ddimport.js"
-
-// bucket is storage type either user data or S3
-// path probably is upload path
-
-//This could be usefull
-// context.multiImageMode = settings.multiImageMode || "l";
-//    context.webpConversion = settings.webpConversion;
-//    context.webpQuality = settings.webpQuality || 0.8;
-
-/*Need to find out what source is on the form
-
-    game.settings.set("dd-import-ad-v13", "importSettings", {
-      source: submitData.source,
-      bucket: submitData.bucket,
-      path: submitData.path,
-      offset: submitData.offset,
-      padding: submitData.padding,
-      fidelity: submitData.fidelity,
-      multiImageMode: submitData.mode,
-      webpConversion: submitData.toWebp,
-      webpQuality: submitData.webpQuality,
-      wallsAroundFiles: submitData.wallsAroundFiles,
-    });
-
-Ok Information:
-source is: User Data (at least from the form?) but it could be that I could use Kern-Daten which are not an option currently: ok it is defined in context.dataSources and is standard = data
-From the API: activeSource: "data" | "public" | "s3"
-https://foundryvtt.com/api/classes/foundry.applications.apps.FilePicker.html#sources
-
-await DDImporter.uploadFile(buffer, content.name, importData.path, importData.source, extension, importData.bucket);
-
-await FilePicker.upload(source, path, uploadFile, {bucket: bucket});
-
-source: data or public
-path: destination directory
-uploadFile: blob
-
-
-    const buffer = DDImporter.DecodeImage(content);
-    const extension = DDImporter.getImageType(atob(content.image.substr(0, 8)));
-
-uploadFile needs to be an object: [file] is the array blob 
-let uploadFile = new File(
-[file],
-name + "." + extension,
-{ type: 'image/' + extension }
-);
-
-await DDImporter.uploadFile(buffer, content.name, importData.path, importData.source, extension, importData.bucket);
-
-hmm those functions are static so I could use them with
-DDImporter.uploadFile ...?
-Yes that is the form or better the object of the form
-
-
-*/
 
 export function registerAnimatedDoorSettings() {
 
@@ -87,7 +29,7 @@ export function registerAnimatedDoorSettings() {
         default: true
     })
 }
-//let doorPath = game.settings.get("dd-import-ad-v13", "animatedDoorPath")
+
 
 function DecodeImage(base64string) {
     //Use newer browser capabilities if present
@@ -128,23 +70,11 @@ async function uploadFile(file, name, path, source, extension) {
     console.log("Source: ", source)
     console.log("Path: ", path)
     //await FilePicker.upload(source, path, uploadFile, { bucket: bucket })
-    // new FilePicker from version V13 and 14. If it is not present switch/fallback to old Version
-    const filePicker = foundry.applications?.apps?.FilePicker?.implementation //?? globalThis.FilePicker;
+    // new FilePicker from version V13 and 14. (old version //?? globalThis.FilePicker;)
+    const filePicker = foundry.applications?.apps?.FilePicker?.implementation
     await filePicker.upload(source, path, uploadFile)
 }
 
-/*
-content = {
-name: string
-image: base64 string
-}
-
-importData = {
-path: "/assets/"
-source: "data"
-bucket:
-}
-*/
 
 async function uploadSourceImage(content, importData, extension) {
     const buffer = DecodeImage(content.image);
@@ -184,25 +114,12 @@ export async function uploadAnimatedDoorAssets(file, destinationInfo = {}) {
     file = file.filter(prop => prop.hasOwnProperty("animated_doors"));
 
     console.log("Reached upload 1!!", file)
-    //This needs to be imported from settings
+
     // if there are no files after filtering then there are not assets to be uploaded
     if (!file.length > 0) return
-    //if (!file[0]?.hasOwnProperty("animated_doors")) return
-    //if (!file[0]?.animated_doors?.hasOwnProperty("assets")) return;
+
     console.log("Reached upload 2!!")
 
-    //const settings = {
-    //  doorPath: "/assets/",
-    // importPath: "",
-    // dataSource: "data"
-    // }
-
-    /* readonly so ... only as fallback to add an asset at all
-    const settings ={
-    doorPath: "canvas/doors/large/",
-    importPath: "",
-    dataSource: "public"
-    }*/
 
     console.log("V13 destination info", destinationInfo)
     const importData = {
@@ -216,9 +133,7 @@ export async function uploadAnimatedDoorAssets(file, destinationInfo = {}) {
         //for loop to get all levels later on OR AT LEAST to loop trough all and check if it is an animated asset level
         for (let i = 0; i < file.length; i++) {
             if (!file[i].animated_doors?.assets) continue; // check if an objekt is returned that holds an asset - even if that is empty
-            //if (file[i].hasOwnProperty("animated_doors")) //we have an uvtt which holds animated doors, use hasOwn if property can be null
-            //{
-            // loop file list if there is more than one image
+
             const assetList = getAnimatedAssetsList(file[i])
             let content = {
                 name: "DoorAsset." + Date.now(), //add a date
@@ -230,14 +145,6 @@ export async function uploadAnimatedDoorAssets(file, destinationInfo = {}) {
                 //Loop the door assets present in the UVTT 
                 for (let j = 0; j < assetList.length; j++) {
 
-                    //if (assetList[j].source_paths.length > 0) { // make sure there are asset names and informations. Should allways be true
-                    //const sourcePathObject = assetList[j].source_paths[0] //grab the first object in source_path to retrieve name and path because at least one must exist. But multiple assets with different names are not covered yet
-                    //Maybe in the instance of multiple asset names only the sha256 key should be saved as name this has room for improvement
-                    //to be correct I would need to cycle the array and create multiple door assets if there is just one additional one with a different name but beeing essentially the same picture. At least as long as I do matching by asset name.
-                    //first fix could be to filter for name as this would eleminate same asset in different packs
-                    //const nameWithSuffix = assetList[j].source_paths[0].split(/[\\/]/).pop() //split and get the last array object splitted off
-                    //const arrayOfNameSplit = nameWithSuffix.split(".")
-                    //content.name = sourcePathObject.naming.short_filename // + "." + sourcePathObject.format //create a Name based on the exported Asset and the exportet file type
                     const useHashName = game.settings.get("dd-import-ad-v13", "animatedDoorUseHashName") || true
 
                     content.image = assetList[j].image
@@ -263,7 +170,7 @@ export async function uploadAnimatedDoorAssets(file, destinationInfo = {}) {
             // Now collect the doors belonging to this asset - just for output reasons
             const doorList = getAnimatedDoorsList(file[i])
             console.log("Final Animated Doors List", doorList)
-            //}
+
         }
     }
 
@@ -273,7 +180,7 @@ export function GetAnimatedDoors(fileArray, scene, offset, pixelsPerGrid) {
     console.log("V13 Array of files for animated doors", fileArray)
     const file = fileArray[0]
     console.log("V13 Single animatied doors Objekt", file)
-    //if(file.animated_doors === undefined) return [] //no animated doors inDoors)
+
     let doors = [];
     let ddDoors = file.portals;
     console.log("Start doors array", ddDoors)
@@ -315,7 +222,7 @@ export function GetAnimatedDoors(fileArray, scene, offset, pixelsPerGrid) {
                     light: door.closed ? CONST.WALL_SENSE_TYPES.NORMAL : CONST.WALL_SENSE_TYPES.PROXIMITY,
                     sight: door.closed ? CONST.WALL_SENSE_TYPES.NORMAL : CONST.WALL_SENSE_TYPES.PROXIMITY,
                     threshold: door.closed ? {} : { attenuation: true, light: 2, sight: 2 }
-                }))   // Proximity type if door.closed = false (assumes they are windows)
+                }))
 
 
             } else {
@@ -416,7 +323,7 @@ function getAnimationProperties(door) {
 
     const doorPath = game.settings.get("dd-import-ad-v13", "animatedDoorPath") || "assets"
     //const doorPath = "assets/" //"canvas/doors/large/" //needs to get a setting
-    // define a base animation
+
     console.log("DOORANIMATION doorPath", doorPath)
     const useHashName = game.settings.get("dd-import-ad-v13", "animatedDoorUseHashName") || true
     let doorTexture = "/canvas/doors/large/Door_Metal_Gray_E1_1x1.webp"
@@ -426,7 +333,7 @@ function getAnimationProperties(door) {
         doorTexture = doorPath + "/" + doorAnimation.texture + "." + doorAnimation.extension || doorTexture
     }
 
-
+    // define a base animation
     let animation = {
         "type": doorAnimation.type || "swing",
         "double": doorAnimation.double || false,
@@ -437,19 +344,6 @@ function getAnimationProperties(door) {
         "texture": doorTexture
     }
 
-    //console.log("Single door in get animation section", door)
-    //if (!door.prepared.targets.foundry.hasOwnProperty("animation")) return null;
-    //console.log("Animation section for single door", door.animation)
-    //animation.type = door.animation.type ?? "swivel";
-
-    //const arrayOfNameSplit = door.animation.texture.split(".")
-    //const assetName = arrayOfNameSplit[0] + ".png" //this and the above is a fix as long as only png are exported
-    //animation.texture = doorPath + door.animation.texture + "." + door.format // need to add fallback settings ?? "canvas/doors/large/Door_Large_Wood_Ashen_C_2x1.webp";
-    //animation.double = door.animation.double ?? false;
-    //animation.direction = door.animation.direction ?? 1; //(door.swingdirection == "left") ? 1 : 0;
-    //animation.direction = (door.rotation /90) //fraction roundning and cutoff at max 2
-    //animation.strength = _roundTo0_05((door.swing_degrees / 90))
-
     console.log("Return of animation section for single door", animation)
     return animation
 }
@@ -459,15 +353,7 @@ function getAnimatedDoorsList(file) {
     console.log("animated doors list:", file.animated_doors)
     console.log("animated doors assets:", file.animated_doors.assets) //need to be decoded and uploaded to be later used as textures
     console.log("animated doors instances:", file.animated_doors.instances) //this is a map with keys 1 to n
-    //I need to return an array of objects that have a bound property that hold a two dimensional array of objects with x and y properties
-    // might be as easy as returning an array of the instances, but I need to check
-    // only add doors of type object and not portal from source property
-    //First s tep create an array from the animated_doors map
 
-    // I only seem to need this actually:
-    //animatedObjectDoors = Object.values(file.animated_doors.instances).filter(door => door.source === "object");
-    // also after changing the export format the filter is not needed for now as there should be no difference between a portal and an object from this point on
-    // animatedObjectDoors = Object.values(file.animated_doors.instances) will do
 
     if (file.animated_doors?.instances) //we have an uvtt which holds animated doors as instances, use hasOwn if property can be null
     {
@@ -475,23 +361,7 @@ function getAnimatedDoorsList(file) {
         console.log("Umgewandeltes object 1:", animatedDoors)
         if (animatedDoors.length === 0) return []
     }
-    /*
-    const doorsMap = new Map(Object.entries(file.animated_doors.instances)); //create a map object from the map of instances
-    console.log("Size of instances:", doorsMap.size) //only if the map has any instances to use
-    console.log("doorsMap.entries():")
-    if (doorsMap.size === 0) return []; //could be empty if no animated doors exist
-    console.log("doors Map:", doorsMap)
-    animatedObjectDoors = Array.from(doorsMap.values()).filter(door => door.source === "object");
-    console.log("animatedObjectDoors: ", animatedObjectDoors)
-    if (animatedObjectDoors.length === 0) return []; //no object doors, so return empty array]
-    return animatedObjectDoors;
-    }*/
+
     console.log("Umgewandeltes object 2:", animatedDoors)
     return animatedDoors;
 };
-
-
-//not necessary anymore
-function _roundTo0_05(value) {
-    return Math.round(value * 20) / 20;
-}

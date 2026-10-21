@@ -793,7 +793,7 @@ class DDImporter extends foundry.applications.api.HandlebarsApplicationMixin(fou
           light: door.closed ? CONST.WALL_SENSE_TYPES.NORMAL : CONST.WALL_SENSE_TYPES.PROXIMITY,
           sight: door.closed ? CONST.WALL_SENSE_TYPES.NORMAL : CONST.WALL_SENSE_TYPES.PROXIMITY,
           threshold: door.closed ? {} : { attenuation: true, light: 10, sight: 10 }
-        }))   // Proximity type if door.closed = false (assumes they are windows)
+        }))
       }
       catch (e) {
         console.error("Could not create Wall Document (door): " + e)
