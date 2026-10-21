@@ -1,7 +1,10 @@
 # Foundry VTT-UVTT-Dungeondraft-Importer for Foundry v13 - Dungeondraft Animated Door Version
 Allows importing Universal VTT map files into FoundryVTT.
 
-![GitHub Downloads (specific asset, latest release)](https://img.shields.io/github/downloads/FVTT-UVTT-Animated-Doors-importer-v13/latest/dd-import-ad-v13.zip)
+![GitHub Downloads (specific asset, latest release)](https://img.shields.io/github/downloads/CePeU/FVTT-UVTT-Animated-Doors-importer-v13/latest/dd-import-ad-v13.zip)
+
+![](https://img.shields.io/github/downloads/cepeu/https%3A%2F%2Fgithub.com%2FCePeU%2FFVTT-UVTT-Animated-Doors-importer-v13/latest/total)
+
 
 ## About this Version
 
