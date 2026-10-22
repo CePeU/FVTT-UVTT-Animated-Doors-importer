@@ -15,7 +15,7 @@ This is a fork under MIT license of the Foundry VTT Universal Battle Map importe
 
 https://github.com/moo-man/FVTT-DD-Import/
 
-That module is flagged as no AI content. While I did purposfully not use AI for this importer (which probably can be derived from my bad coding) to allow to push my changes back into the original fork. I did use AI to create the Animated Door mod for Dungeondraft which allows this mod to import UVTT files which have been modded to entail the necessary informations for animated doors.
+That module is flagged as no AI content. While I did purposfully not use AI for this importer (which probably can be derived from my bad coding) to allow to push my changes back into the original fork - if so desired at one point. I did use AI to create the Animated Door mod for Dungeondraft which allows this mod to import UVTT files which have been modded to entail the necessary informations for animated doors.
 Dungeondraft does the heavy lifting of creating the data necessary and this fork is adjusted to allow for the import of that data.
 
 I might also consider to add multi level support for imports. But as I said my coding skills are still need some training so it might take time or never happen. I still loved to learn and do this mod without AI (unless you count googling these days as AI supported).
