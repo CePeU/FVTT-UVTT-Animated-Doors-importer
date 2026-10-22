@@ -5,8 +5,6 @@ Allows importing Universal VTT map files into FoundryVTT.
 
 ## About this Version
 
-## About this Version
-
 Install this module manually by pasting this link in your Foundry module Manifest URL input field:
 
 https://github.com/CePeU/FVTT-UVTT-Animated-Doors-importer-v13/releases/download/1.0.0/module.json
